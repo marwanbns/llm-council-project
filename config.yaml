@@ -1,0 +1,37 @@
+app:
+  api_host: "0.0.0.0"
+  api_port: 8000
+  debug: true
+  llm_timeout: 800
+  health_check_interval: 30
+
+council:
+  members:
+    - name: "Counselor A"
+      host: "http://localhost"
+      port: 11434
+      model: "llama3.2"
+    - name: "Counselor B"
+      host: "http://localhost"
+      port: 11434
+      model: "mistral"
+    - name: "Counselor C"
+      host: "http://localhost"
+      port: 11434
+      model: "phi3"
+
+chairman:
+  mode: local   # local | remote
+
+  # Used if mode=local
+  local:
+    name: "Chairman"
+    host: "http://localhost"
+    port: 11434
+    model: "mistral"
+
+  # Used if mode=remote
+  remote:
+    base_url: "http://192.168.1.101:9000"
+    endpoint: "/api/chairman/synthesize"
+    timeout_s: 900
