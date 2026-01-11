@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>LLM Council | Local</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark">◼︎</div>
+        <div>
+          <div class="title">LLM Council</div>
+          <div class="subtitle">Local multi-LLM consensus</div>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <button class="chip" id="healthBtn">
+          <span class="dot" id="healthDot"></span>
+          System
+        </button>
+
+        <button class="chip" id="themeToggle" title="Toggle theme">
+          <span class="mono">Theme</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="layout">
+      <!-- Left: Control / Timeline -->
+      <section class="left">
+        <div class="panel">
+          <div class="panel-header">
+            <h2>Ask</h2>
+            <div class="models" id="modelBadges"></div>
+          </div>
+
+          <textarea id="queryInput" placeholder="Ask a question… (Ctrl/Cmd + Enter to run)" rows="5"></textarea>
+
+          <div class="row">
+            <button class="btn" id="submitBtn">
+              <span id="submitLabel">Run Council</span>
+              <span class="spinner" id="submitSpinner" aria-hidden="true"></span>
+            </button>
+
+            <button class="btn-ghost" id="inspectBtn" title="Show raw JSON for debugging">
+              Inspect
+            </button>
+          </div>
+
+          <div class="meta" id="sessionMeta"></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <h2>Pipeline</h2>
+            <div class="hint mono">Stage updates stream live</div>
+          </div>
+
+          <div class="timeline" id="timeline">
+            <div class="step" data-step="pending">
+              <div class="bullet"></div>
+              <div class="step-body">
+                <div class="step-title">Stage 1 — First opinions</div>
+                <div class="step-desc" id="s1Status">Waiting</div>
+              </div>
+            </div>
+
+            <div class="step" data-step="first_opinions">
+              <div class="bullet"></div>
+              <div class="step-body">
+                <div class="step-title">Stage 2 — Review & ranking</div>
+                <div class="step-desc" id="s2Status">Waiting</div>
+              </div>
+            </div>
+
+            <div class="step" data-step="review_ranking">
+              <div class="bullet"></div>
+              <div class="step-body">
+                <div class="step-title">Stage 3 — Chairman synthesis</div>
+                <div class="step-desc" id="s3Status">Waiting</div>
+              </div>
+            </div>
+
+            <div class="step" data-step="completed">
+              <div class="bullet"></div>
+              <div class="step-body">
+                <div class="step-title">Completed</div>
+                <div class="step-desc" id="doneStatus">—</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right: Results -->
+      <section class="right">
+        <div class="grid">
+          <!-- Stage 1 -->
+          <article class="card" id="stage1Card">
+            <div class="card-head">
+              <h3>Stage 1</h3>
+              <span class="badge">First opinions</span>
+            </div>
+            <div class="tabs" id="opinionTabs"></div>
+            <div class="card-body" id="opinionsContent">
+              <div class="empty">No opinions yet.</div>
+            </div>
+          </article>
+
+          <!-- Stage 2 -->
+          <article class="card" id="stage2Card">
+            <div class="card-head">
+              <h3>Stage 2</h3>
+              <span class="badge">Review & rank</span>
+            </div>
+
+            <div class="rank" id="rankingsGrid"></div>
+
+            <details class="details" id="reviewsDetails">
+              <summary class="mono">Peer reviews</summary>
+              <div class="card-body" id="reviewsContent">
+                <div class="empty">No reviews yet.</div>
+              </div>
+            </details>
+          </article>
+
+          <!-- Stage 3 -->
+          <article class="card accent" id="stage3Card">
+            <div class="card-head">
+              <h3>Stage 3</h3>
+              <span class="badge badge-accent">Chairman</span>
+            </div>
+            <div class="card-body" id="chairmanContent">
+              <div class="empty">No synthesis yet.</div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Health modal -->
+  <div class="modal" id="healthModal" aria-hidden="true">
+    <div class="overlay" id="modalOverlay"></div>
+    <div class="dialog" role="dialog" aria-modal="true" aria-label="System health">
+      <div class="dialog-head">
+        <div>
+          <div class="dialog-title">System health</div>
+          <div class="dialog-sub mono">Ollama nodes + latency</div>
+        </div>
+        <button class="x" id="modalClose" aria-label="Close">×</button>
+      </div>
+      <div class="dialog-body" id="healthContent">
+        <div class="empty">Loading…</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Inspect drawer -->
+  <div class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawer-head">
+      <div>
+        <div class="drawer-title">Inspect session JSON</div>
+        <div class="drawer-sub mono">Raw SSE payload</div>
+      </div>
+      <button class="x" id="drawerClose" aria-label="Close">×</button>
+    </div>
+    <pre class="drawer-body mono" id="inspectJson">{}</pre>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
