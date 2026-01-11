@@ -9,8 +9,8 @@ Projet de **LLM Council local** inspiré du concept d'Andrej Karpathy : plusieur
 
 ```bash
 ollama list
-git clone https://github.com/lisacharuel/llm-council-local-project.git
-cd llm-council-local-project
+git clone https://github.com/marwanbns/llm-council-project.git
+cd llm-council-project
 conda create -n genai-project python==3.11 <- environnement
 conda activate genai-project
 pip install -r requirements.txt
@@ -83,4 +83,5 @@ L’inférence est réalisée 100% en local via Ollama, avec une architecture pr
 ![Screen4](assets/screenshot4.png)
 
 ## Auteur
+
 **Marwan bns**
